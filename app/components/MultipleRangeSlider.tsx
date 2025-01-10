@@ -1,27 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Slider, SliderChangeEvent } from "primereact/slider";
 
 export default function MultipleRangeSlider({
   name,
   minAndMax,
   captureRangeValue,
+  isClearButtonClicked,
 }) {
   const [value, setValue] = useState<[number, number]>(minAndMax);
 
+  useEffect(() => {
+    setValue(minAndMax);
+  }, [isClearButtonClicked]);
+
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <Slider
+        className="mx-4 lg:mx-0"
         value={value}
         onChange={(e: SliderChangeEvent) => {
-          setValue(e.value as [number, number]);
           captureRangeValue({ name: name, range: e.value });
+          setValue(e.value as [number, number]);
         }}
-        className="lg:w-48"
         range
         max={minAndMax[1]}
         min={minAndMax[0]}
       />
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-2">
         <span>
           {
             name != "Date" ? `$${Math.floor(value[0] / 1000000)}M` : value[0]

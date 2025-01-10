@@ -15,6 +15,7 @@ export default function Filters({
     useState<[number, number]>(minAndMaxNetIncome);
 
   const [minAndMaxInfo, setMinAndMaxInfo] = useState([]);
+  const [isClearButtonClicked, setIsClearButtonClicked] = useState(false);
 
   const captureRangeValue = (params) => {
     if (params.name == "Date") {
@@ -51,33 +52,40 @@ export default function Filters({
       revenueRange: minAndMaxRevenue,
       netIncomeRange: minAndMaxNetIncome,
     };
+    setIsClearButtonClicked(!isClearButtonClicked);
     filterTableList(filters);
   };
 
   return (
     <>
       <Card className="my-4">
-        <div className="flex justify-between py-4 w-full flex-col lg:flex-row gap-8">
-          <div className="flex flex-col lg:flex-row items-center">
-            {minAndMaxInfo.map((info, index) => {
-              return (
-                <div key={index} className="lg:px-4">
-                  <Typography
-                    variant="small"
-                    color="blue-gray"
-                    className="font-normal"
+        <div className="flex py-4 flex-col lg:flex-row">
+          <div className="flex w-full justify-between flex-col lg:flex-row items-center px-8">
+            <div className="flex flex-col lg:flex-row">
+              {minAndMaxInfo.map((info, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="flex flex-col items-center w-full mb-4 lg:px-4"
                   >
-                    {info.name}
-                  </Typography>
-                  <MultipleRangeSlider
-                    name={info.name}
-                    minAndMax={info.minAndMax}
-                    range={info.minAndMax}
-                    captureRangeValue={captureRangeValue}
-                  />
-                </div>
-              );
-            })}
+                    <Typography
+                      variant="medium"
+                      color="blue-gray"
+                      className="font-normal mb-2"
+                    >
+                      {info.name}
+                    </Typography>
+                    <MultipleRangeSlider
+                      name={info.name}
+                      minAndMax={info.minAndMax}
+                      range={info.minAndMax}
+                      captureRangeValue={captureRangeValue}
+                      isClearButtonClicked={isClearButtonClicked}
+                    />
+                  </div>
+                );
+              })}
+            </div>
             <div className="flex lg:flex-col">
               <Button
                 className="mr-2 lg:mb-2 lg:mx-0"
