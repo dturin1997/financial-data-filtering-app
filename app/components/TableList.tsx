@@ -3,12 +3,27 @@ import React, { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import Filters from "./Filters";
 
-export default function TableList() {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
+interface DataRow {
+  date: string;
+  revenue: number;
+  netIncome: number;
+  grossProfit: number;
+  eps: number;
+  operatingIncome: number;
+}
 
-  const [minAndMaxYears, setMinAndMaxYears] = useState<[number, number]>();
-  const [minAndMaxRevenue, setMinAndMaxRevenue] = useState<[number, number]>();
+interface Filters {
+  dateRange: [number, number];
+  revenueRange: [number, number];
+  netIncomeRange: [number, number];
+}
+
+export default function TableList() {
+  const [data, setData] = useState<DataRow[]>([]);
+  const [filteredData, setFilteredData] = useState<DataRow[]>([]);
+
+  const [minAndMaxYears, setMinAndMaxYears] = useState<number[]>([]);
+  const [minAndMaxRevenue, setMinAndMaxRevenue] = useState<number[]>([]);
   const [minAndMaxNetIncome, setMinAndMaxNetIncome] =
     useState<[number, number]>();
 
@@ -19,7 +34,7 @@ export default function TableList() {
       const res = await fetch(
         "https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=KKyqUUKofJ5BgUtYZ5k2pxOx8qYq6ih2"
       );
-      const result = await res.json();
+      const result: DataRow[] = await res.json();
 
       setData(result);
       setFilteredData(result);
@@ -63,7 +78,7 @@ export default function TableList() {
     fetchData();
   }, []);
 
-  const filterTableList = (filters: any) => {
+  const filterTableList = (filters: Filters) => {
     const filteredData = data.filter((item) => {
       const year = item.date.split("-")[0];
       const revenue = item.revenue;

@@ -1,13 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Slider, SliderChangeEvent } from "primereact/slider";
 
+interface params {
+  name: string;
+  range: number[];
+}
+interface Props {
+  name: string;
+  minAndMax: number[];
+  captureRangeValue: (params: params) => void;
+  isClearButtonClicked: boolean;
+}
 export default function MultipleRangeSlider({
   name,
   minAndMax,
   captureRangeValue,
   isClearButtonClicked,
-}) {
-  const [value, setValue] = useState<[number, number]>(minAndMax);
+}: Props) {
+  const [value, setValue] = useState<number[]>(minAndMax);
 
   useEffect(() => {
     setValue(minAndMax);
@@ -17,10 +27,10 @@ export default function MultipleRangeSlider({
     <div className="flex flex-col w-full">
       <Slider
         className="mx-4 lg:mx-0"
-        value={value}
+        value={[value[0], value[1]]}
         onChange={(e: SliderChangeEvent) => {
-          captureRangeValue({ name: name, range: e.value });
-          setValue(e.value as [number, number]);
+          captureRangeValue({ name: name, range: e.value as number[] });
+          setValue(e.value as number[]);
         }}
         range
         max={minAndMax[1]}

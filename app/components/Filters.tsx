@@ -2,22 +2,44 @@ import React, { useEffect, useState } from "react";
 import { Button, Typography, Card } from "@material-tailwind/react";
 import MultipleRangeSlider from "./MultipleRangeSlider";
 
+interface minAndMaxRow {
+  name: string;
+  minAndMax: number[];
+}
+
+interface RangeValue {
+  name: string;
+  range: number[];
+}
+
+interface Filters {
+  dateRange: number[];
+  revenueRange: number[];
+  netIncomeRange: number[];
+}
+
+interface Props {
+  minAndMaxYears: number[];
+  minAndMaxRevenue: number[];
+  minAndMaxNetIncome: number[];
+  filterTableList: (filters: Filters) => void;
+}
+
 export default function Filters({
   minAndMaxYears,
   minAndMaxRevenue,
   minAndMaxNetIncome,
   filterTableList,
-}) {
-  const [dateRange, setDateRange] = useState<[number, number]>(minAndMaxYears);
-  const [revenueRange, setRevenueRange] =
-    useState<[number, number]>(minAndMaxRevenue);
+}: Props) {
+  const [dateRange, setDateRange] = useState<number[]>(minAndMaxYears);
+  const [revenueRange, setRevenueRange] = useState<number[]>(minAndMaxRevenue);
   const [netIncomeRange, setNetIncomeRange] =
-    useState<[number, number]>(minAndMaxNetIncome);
+    useState<number[]>(minAndMaxNetIncome);
 
-  const [minAndMaxInfo, setMinAndMaxInfo] = useState([]);
+  const [minAndMaxInfo, setMinAndMaxInfo] = useState<minAndMaxRow[]>([]);
   const [isClearButtonClicked, setIsClearButtonClicked] = useState(false);
 
-  const captureRangeValue = (params) => {
+  const captureRangeValue = (params: RangeValue) => {
     if (params.name == "Date") {
       setDateRange(params.range);
     }
@@ -29,7 +51,7 @@ export default function Filters({
     }
   };
   useEffect(() => {
-    const minAndMaxInfo = [
+    const minAndMaxInfo: minAndMaxRow[] = [
       { name: "Date", minAndMax: dateRange },
       { name: "Revenue", minAndMax: revenueRange },
       { name: "Net Income", minAndMax: netIncomeRange },
@@ -38,7 +60,7 @@ export default function Filters({
   }, []);
 
   const handleButtonFilterClick = () => {
-    const filters: any = {
+    const filters: Filters = {
       dateRange: dateRange,
       revenueRange: revenueRange,
       netIncomeRange: netIncomeRange,
@@ -47,7 +69,7 @@ export default function Filters({
   };
 
   const handleButtonClearClick = () => {
-    const filters: any = {
+    const filters: Filters = {
       dateRange: minAndMaxYears,
       revenueRange: minAndMaxRevenue,
       netIncomeRange: minAndMaxNetIncome,
