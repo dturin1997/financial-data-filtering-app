@@ -12,10 +12,10 @@ interface DataRow {
   operatingIncome: number;
 }
 
-interface Filters {
-  dateRange: [number, number];
-  revenueRange: [number, number];
-  netIncomeRange: [number, number];
+interface Filter {
+  dateRange: number[];
+  revenueRange: number[];
+  netIncomeRange: number[];
 }
 
 export default function TableList() {
@@ -24,8 +24,7 @@ export default function TableList() {
 
   const [minAndMaxYears, setMinAndMaxYears] = useState<number[]>([]);
   const [minAndMaxRevenue, setMinAndMaxRevenue] = useState<number[]>([]);
-  const [minAndMaxNetIncome, setMinAndMaxNetIncome] =
-    useState<[number, number]>();
+  const [minAndMaxNetIncome, setMinAndMaxNetIncome] = useState<number[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -78,7 +77,7 @@ export default function TableList() {
     fetchData();
   }, []);
 
-  const filterTableList = (filters: Filters) => {
+  const filterTableList = (filters: Filter) => {
     const filteredData = data.filter((item) => {
       const year = item.date.split("-")[0];
       const revenue = item.revenue;

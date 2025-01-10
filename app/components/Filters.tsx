@@ -12,7 +12,7 @@ interface RangeValue {
   range: number[];
 }
 
-interface Filters {
+interface Filter {
   dateRange: number[];
   revenueRange: number[];
   netIncomeRange: number[];
@@ -22,7 +22,7 @@ interface Props {
   minAndMaxYears: number[];
   minAndMaxRevenue: number[];
   minAndMaxNetIncome: number[];
-  filterTableList: (filters: Filters) => void;
+  filterTableList: (filters: Filter) => void;
 }
 
 export default function Filters({
@@ -60,7 +60,7 @@ export default function Filters({
   }, []);
 
   const handleButtonFilterClick = () => {
-    const filters: Filters = {
+    const filters: Filter = {
       dateRange: dateRange,
       revenueRange: revenueRange,
       netIncomeRange: netIncomeRange,
@@ -69,7 +69,7 @@ export default function Filters({
   };
 
   const handleButtonClearClick = () => {
-    const filters: Filters = {
+    const filters: Filter = {
       dateRange: minAndMaxYears,
       revenueRange: minAndMaxRevenue,
       netIncomeRange: minAndMaxNetIncome,
@@ -91,7 +91,7 @@ export default function Filters({
                     className="flex flex-col items-center w-full mb-4 lg:px-4"
                   >
                     <Typography
-                      variant="medium"
+                      variant="h6"
                       color="blue-gray"
                       className="font-normal mb-2"
                     >
@@ -100,7 +100,6 @@ export default function Filters({
                     <MultipleRangeSlider
                       name={info.name}
                       minAndMax={info.minAndMax}
-                      range={info.minAndMax}
                       captureRangeValue={captureRangeValue}
                       isClearButtonClicked={isClearButtonClicked}
                     />
