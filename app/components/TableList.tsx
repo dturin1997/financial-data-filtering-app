@@ -1,14 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Card, Typography } from "@material-tailwind/react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Filters from "./Filters";
-import { DataRow, Filter } from "../interfaces/interface";
+import { DataRow, Filter, Fields } from "../interfaces/interface";
 import { rawData } from "../Data/fixedData";
 
 export default function TableList() {
   const [initialData, setInitialData] = useState<DataRow[]>([]);
+  const [fields, setFields] = useState<string[]>([]);
   const [filteredData, setFilteredData] = useState<DataRow[]>([]);
   const [filters, setFilters] = useState<Partial<Filter>>({});
 
@@ -23,23 +23,25 @@ export default function TableList() {
       const apiKey = process.env.NEXT_PUBLIC_API_KEY;
       const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
 
-      const res = await fetch(
-        `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
-      );
+      var initialData: DataRow[];
 
-      const initialData: DataRow[] =
-        environment != "development"
-          ? await res.json()
-          : rawData.map((item) => ({
-              date: item.date,
-              revenue: item.revenue,
-              netIncome: item.netIncome,
-              grossProfit: item.grossProfit,
-              eps: item.eps,
-              operatingIncome: item.operatingIncome,
-            }));
-
+      if (environment != "development") {
+        const res = await fetch(
+          `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
+        );
+        initialData = await res.json();
+      } else {
+        initialData = rawData.map((item) => ({
+          date: item.date,
+          revenue: item.revenue,
+          netIncome: item.netIncome,
+          grossProfit: item.grossProfit,
+          eps: item.eps,
+          operatingIncome: item.operatingIncome,
+        }));
+      }
       setInitialData(initialData);
+      setFields(Object.keys(initialData[0]));
       setFilteredData(initialData);
 
       const minYear = Number(
@@ -121,18 +123,42 @@ export default function TableList() {
         minAndMaxRevenue={minAndMaxRevenue}
         minAndMaxNetIncome={minAndMaxNetIncome}
       />
-      <div className="card my-8">
+      <div className="card my-8 flex flex-row">
+        <div className="table  w-full md:hidden">
+          <div className="table-header-group">
+            {Array.from({ length: filteredData.length }, (_, row) => {
+              return (
+                <div
+                  key={row}
+                  className={`flex flex-col  border-t-2 border-l-2 border-dotted border-gray-300 row-header-custom ${row +1 == filteredData.length ? "border-b-2": null}`}
+                >
+                  {fields.map((name) => (
+                    <div
+                      key={row + name}
+                      className={`table-cell ${
+                        (row + 1) % 2 == 0 ? "bg-[#FCFCFC]" : "bg-white"
+                      } text-left`}
+                    >
+                      {name
+                        .replace(/([a-z])([A-Z])/g, "$1 $2")
+                        .replace(/\b\w/g, (char) => char.toUpperCase())}
+                    </div>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <DataTable
           value={filteredData}
-          responsiveLayout={"stack"}
-          breakpoint={"960px"}
           stripedRows
-          tableStyle={{width:"100%"}}
+          tableStyle={{ width: "100%" }}
         >
           <Column field="date" header="Date" />
           <Column field="revenue" header="Revenue" />
           <Column field="netIncome" header="Net Income" />
-          <Column field="eps" header="EPS" />
+          <Column field="grossProfit" header="Gross Profit" />
+          <Column field="eps" header="Earnings Per Share" />
           <Column field="operatingIncome" header="Operating Income" />
         </DataTable>
       </div>

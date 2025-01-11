@@ -27,3 +27,12 @@ export interface Params {
   name: string;
   range: number[];
 }
+
+export interface Fields {
+  date: string;
+  revenue: string;
+  netIncome: string;
+  grossProfit: string;
+  eps: string;
+  operatingIncome: string;
+}
