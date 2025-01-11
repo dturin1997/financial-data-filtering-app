@@ -5,6 +5,7 @@ import { Column } from "primereact/column";
 import Filters from "./Filters";
 import { DataRow, Filter, Fields } from "../interfaces/interface";
 import { rawData } from "../Data/fixedData";
+import SortDropdown from "./SortDropdown";
 
 export default function TableList() {
   const [initialData, setInitialData] = useState<DataRow[]>([]);
@@ -123,6 +124,7 @@ export default function TableList() {
         minAndMaxRevenue={minAndMaxRevenue}
         minAndMaxNetIncome={minAndMaxNetIncome}
       />
+      <SortDropdown />
       <div className="card my-8 flex flex-row">
         <div className="table  w-full md:hidden">
           <div className="table-header-group">
@@ -130,7 +132,9 @@ export default function TableList() {
               return (
                 <div
                   key={row}
-                  className={`flex flex-col  border-t-2 border-l-2 border-dotted border-gray-300 row-header-custom ${row +1 == filteredData.length ? "border-b-2": null}`}
+                  className={`flex flex-col  border-t-2 border-l-2 border-dotted border-gray-300 row-header-custom ${
+                    row + 1 == filteredData.length ? "border-b-2" : null
+                  }`}
                 >
                   {fields.map((name) => (
                     <div

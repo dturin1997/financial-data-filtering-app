@@ -36,3 +36,14 @@ export interface Fields {
   eps: string;
   operatingIncome: string;
 }
+
+export interface DropDownField {
+  id: string;
+  text: string;
+  state: boolean | null;
+}
+
+export interface SortRequest {
+  field: string;
+  asc: boolean;
+}
