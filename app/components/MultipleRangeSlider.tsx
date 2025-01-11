@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Slider, SliderChangeEvent } from "primereact/slider";
+import { Params } from "../interfaces/interface";
 
-interface params {
-  name: string;
-  range: number[];
-}
 interface Props {
   name: string;
   minAndMax: number[];
-  captureRangeValue: (params: params) => void;
+  captureRangeValue: (params: Params) => void;
   isClearButtonClicked: boolean;
 }
 export default function MultipleRangeSlider({
@@ -21,6 +18,7 @@ export default function MultipleRangeSlider({
 
   useEffect(() => {
     setValue(minAndMax);
+    captureRangeValue({ name: name, range: minAndMax });
   }, [isClearButtonClicked]);
 
   return (

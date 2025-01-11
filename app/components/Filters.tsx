@@ -1,28 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Typography, Card } from "@material-tailwind/react";
 import MultipleRangeSlider from "./MultipleRangeSlider";
-
-interface minAndMaxRow {
-  name: string;
-  minAndMax: number[];
-}
-
-interface RangeValue {
-  name: string;
-  range: number[];
-}
-
-interface Filter {
-  dateRange: number[];
-  revenueRange: number[];
-  netIncomeRange: number[];
-}
+import { Filter, MinAndMaxRow, RangeValue } from "../interfaces/interface";
 
 interface Props {
   minAndMaxYears: number[];
   minAndMaxRevenue: number[];
   minAndMaxNetIncome: number[];
   filterTableList: (filters: Filter) => void;
+  filters: Partial<Filter>;
 }
 
 export default function Filters({
@@ -36,7 +22,7 @@ export default function Filters({
   const [netIncomeRange, setNetIncomeRange] =
     useState<number[]>(minAndMaxNetIncome);
 
-  const [minAndMaxInfo, setMinAndMaxInfo] = useState<minAndMaxRow[]>([]);
+  const [minAndMaxInfo, setMinAndMaxInfo] = useState<MinAndMaxRow[]>([]);
   const [isClearButtonClicked, setIsClearButtonClicked] = useState(false);
 
   const captureRangeValue = (params: RangeValue) => {
@@ -51,7 +37,7 @@ export default function Filters({
     }
   };
   useEffect(() => {
-    const minAndMaxInfo: minAndMaxRow[] = [
+    const minAndMaxInfo: MinAndMaxRow[] = [
       { name: "Date", minAndMax: dateRange },
       { name: "Revenue", minAndMax: revenueRange },
       { name: "Net Income", minAndMax: netIncomeRange },
@@ -74,6 +60,7 @@ export default function Filters({
       revenueRange: minAndMaxRevenue,
       netIncomeRange: minAndMaxNetIncome,
     };
+
     setIsClearButtonClicked(!isClearButtonClicked);
     filterTableList(filters);
   };

@@ -2,25 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
 import Filters from "./Filters";
-
-interface DataRow {
-  date: string;
-  revenue: number;
-  netIncome: number;
-  grossProfit: number;
-  eps: number;
-  operatingIncome: number;
-}
-
-interface Filter {
-  dateRange: number[];
-  revenueRange: number[];
-  netIncomeRange: number[];
-}
+import { DataRow, Filter } from "../interfaces/interface";
+//import { rawData } from "../Data/fixedData";
 
 export default function TableList() {
-  const [data, setData] = useState<DataRow[]>([]);
+  const [initialData, setInitialData] = useState<DataRow[]>([]);
   const [filteredData, setFilteredData] = useState<DataRow[]>([]);
+  const [filters, setFilters] = useState<Partial<Filter>>({});
 
   const [minAndMaxYears, setMinAndMaxYears] = useState<number[]>([]);
   const [minAndMaxRevenue, setMinAndMaxRevenue] = useState<number[]>([]);
@@ -33,58 +21,79 @@ export default function TableList() {
       const res = await fetch(
         "https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=KKyqUUKofJ5BgUtYZ5k2pxOx8qYq6ih2"
       );
-      const result: DataRow[] = await res.json();
+      const initialData: DataRow[] = await res.json();
 
-      setData(result);
-      setFilteredData(result);
+      /*
+      const initialData = rawData.map((item) => ({
+        date: item.date,
+        revenue: item.revenue,
+        netIncome: item.netIncome,
+        grossProfit: item.grossProfit,
+        eps: item.eps,
+        operatingIncome: item.operatingIncome,
+      }));
+      */
+
+      setInitialData(initialData);
+      setFilteredData(initialData);
 
       const minYear = Number(
-        result
+        initialData
           .reduce((min, item) => {
             return item.date < min ? item.date : min;
-          }, result[0].date)
+          }, initialData[0].date)
           .split("-")[0]
       );
       const maxYear = Number(
-        result
+        initialData
           .reduce((max, item) => {
             return item.date > max ? item.date : max;
-          }, result[0].date)
+          }, initialData[0].date)
           .split("-")[0]
       );
 
-      const minRevenue = result.reduce((min, item) => {
+      const minRevenue = initialData.reduce((min, item) => {
         return item.revenue < min ? item.revenue : min;
-      }, result[0].revenue);
+      }, initialData[0].revenue);
 
-      const maxRevenue = result.reduce((max, item) => {
+      const maxRevenue = initialData.reduce((max, item) => {
         return item.revenue > max ? item.revenue : max;
-      }, result[0].revenue);
+      }, initialData[0].revenue);
 
-      const minNetIncome = result.reduce((min, item) => {
+      const minNetIncome = initialData.reduce((min, item) => {
         return item.netIncome < min ? item.netIncome : min;
-      }, result[0].netIncome);
+      }, initialData[0].netIncome);
 
-      const maxNetIncome = result.reduce((max, item) => {
+      const maxNetIncome = initialData.reduce((max, item) => {
         return item.netIncome > max ? item.netIncome : max;
-      }, result[0].netIncome);
+      }, initialData[0].netIncome);
 
       setMinAndMaxYears([minYear, maxYear]);
       setMinAndMaxRevenue([minRevenue, maxRevenue]);
       setMinAndMaxNetIncome([minNetIncome, maxNetIncome]);
+
+      const initialFilters = {
+        dateRange: [minYear, maxYear],
+        revenueRange: [minRevenue, maxRevenue],
+        netIncomeRange: [minNetIncome, maxNetIncome],
+      };
+
+      setFilters(initialFilters);
       setLoading(false);
     };
+
     fetchData();
   }, []);
 
   const filterTableList = (filters: Filter) => {
-    const filteredData = data.filter((item) => {
+    setFilters(filters);
+    const filteredData = initialData.filter((item) => {
       const year = item.date.split("-")[0];
       const revenue = item.revenue;
       const netIncome = item.netIncome;
       if (
-        Number(year) >= Number(filters.dateRange[0]) &&
-        Number(year) <= Number(filters.dateRange[1]) &&
+        Number(year) >= filters.dateRange[0] &&
+        Number(year) <= filters.dateRange[1] &&
         revenue >= filters.revenueRange[0] &&
         revenue <= filters.revenueRange[1] &&
         netIncome >= filters.netIncomeRange[0] &&
@@ -101,6 +110,7 @@ export default function TableList() {
   return (
     <div className="">
       <Filters
+        filters={filters}
         filterTableList={filterTableList}
         minAndMaxYears={minAndMaxYears}
         minAndMaxRevenue={minAndMaxRevenue}
