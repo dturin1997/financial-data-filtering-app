@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, Typography } from "@material-tailwind/react";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 import Filters from "./Filters";
 import { DataRow, Filter } from "../interfaces/interface";
-//import { rawData } from "../Data/fixedData";
+import { rawData } from "../Data/fixedData";
 
 export default function TableList() {
   const [initialData, setInitialData] = useState<DataRow[]>([]);
@@ -18,21 +20,24 @@ export default function TableList() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch(
-        "https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=KKyqUUKofJ5BgUtYZ5k2pxOx8qYq6ih2"
-      );
-      const initialData: DataRow[] = await res.json();
+      const apiKey = process.env.NEXT_PUBLIC_API_KEY;
+      const environment = process.env.NEXT_PUBLIC_ENVIRONMENT;
 
-      /*
-      const initialData = rawData.map((item) => ({
-        date: item.date,
-        revenue: item.revenue,
-        netIncome: item.netIncome,
-        grossProfit: item.grossProfit,
-        eps: item.eps,
-        operatingIncome: item.operatingIncome,
-      }));
-      */
+      const res = await fetch(
+        `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
+      );
+
+      const initialData: DataRow[] =
+        environment != "development"
+          ? await res.json()
+          : rawData.map((item) => ({
+              date: item.date,
+              revenue: item.revenue,
+              netIncome: item.netIncome,
+              grossProfit: item.grossProfit,
+              eps: item.eps,
+              operatingIncome: item.operatingIncome,
+            }));
 
       setInitialData(initialData);
       setFilteredData(initialData);
@@ -108,7 +113,7 @@ export default function TableList() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="">
+    <div className="mx-4">
       <Filters
         filters={filters}
         filterTableList={filterTableList}
@@ -116,99 +121,21 @@ export default function TableList() {
         minAndMaxRevenue={minAndMaxRevenue}
         minAndMaxNetIncome={minAndMaxNetIncome}
       />
-      <Card className="h-full w-full overflow-scroll">
-        <table className="w-full min-w-max table-auto text-left">
-          <thead>
-            <tr>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Date
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Revenue
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Net Income
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Gross Profit
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                EPS
-              </th>
-              <th className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
-                Operating Income
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredData.map(
-              (
-                { date, revenue, netIncome, grossProfit, eps, operatingIncome },
-                index
-              ) => {
-                return (
-                  <tr key={index}>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {date}
-                      </Typography>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {revenue}
-                      </Typography>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {netIncome}
-                      </Typography>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {grossProfit}
-                      </Typography>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {eps}
-                      </Typography>
-                    </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                      >
-                        {operatingIncome}
-                      </Typography>
-                    </td>
-                  </tr>
-                );
-              }
-            )}
-          </tbody>
-        </table>
-      </Card>
+      <div className="card my-8">
+        <DataTable
+          value={filteredData}
+          responsiveLayout={"stack"}
+          breakpoint={"960px"}
+          stripedRows
+          tableStyle={{width:"100%"}}
+        >
+          <Column field="date" header="Date" />
+          <Column field="revenue" header="Revenue" />
+          <Column field="netIncome" header="Net Income" />
+          <Column field="eps" header="EPS" />
+          <Column field="operatingIncome" header="Operating Income" />
+        </DataTable>
+      </div>
     </div>
   );
 }

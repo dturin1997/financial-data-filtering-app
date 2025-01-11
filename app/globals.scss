@@ -1,0 +1,33 @@
+@layer tailwind-base, primereact, tailwind-utilities;
+
+@import "primereact/resources/themes/saga-orange/theme.css" layer(primereact);
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+.p-slider-handle {
+  border: 2px solid #ffc107;
+}
+
+.p-card-title {
+  display: flex;
+  justify-content: center;
+}
+
+.p-datatable-tbody > tr > td {
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 75% !important;
+  margin-left: 12.5%;
+  margin-right: 12.5%;
+}
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd {
+  background-color: #F8F9FA;
+}

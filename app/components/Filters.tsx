@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Typography, Card } from "@material-tailwind/react";
+import { Button } from "primereact/button";
+import { Card } from "primereact/card";
 import MultipleRangeSlider from "./MultipleRangeSlider";
 import { Filter, MinAndMaxRow, RangeValue } from "../interfaces/interface";
 
@@ -67,23 +68,19 @@ export default function Filters({
 
   return (
     <>
-      <Card className="my-4">
-        <div className="flex py-4 flex-col lg:flex-row">
-          <div className="flex w-full justify-between flex-col lg:flex-row items-center px-8">
-            <div className="flex flex-col lg:flex-row">
+      <div className="card my-3">
+        <Card title="User Filters">
+          <div className="flex flex-col">
+            <div>
               {minAndMaxInfo.map((info, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex flex-col items-center w-full mb-4 lg:px-4"
+                    className="w-full flex-col items-center mb-4"
                   >
-                    <Typography
-                      variant="h6"
-                      color="blue-gray"
-                      className="font-normal mb-2"
-                    >
-                      {info.name}
-                    </Typography>
+                    <div className="flex justify-center">
+                      <span className="mb-4">{info.name}</span>
+                    </div>
                     <MultipleRangeSlider
                       name={info.name}
                       minAndMax={info.minAndMax}
@@ -94,27 +91,25 @@ export default function Filters({
                 );
               })}
             </div>
-            <div className="flex lg:flex-col">
+
+            <div className="flex w-full justify-between">
               <Button
-                className="mr-2 lg:mb-2 lg:mx-0"
-                size="sm"
-                variant="gradient"
-                onClick={handleButtonFilterClick}
-              >
-                Filter
-              </Button>
-              <Button
-                className="ml-2 lg:mt-2 lg:mx-0"
-                size="sm"
-                variant="gradient"
+                className="w-[20%] text-xl px-2 py-1 ml-[25%]"
+                label="Clear"
+                raised
                 onClick={handleButtonClearClick}
-              >
-                Clear
-              </Button>
+              />
+              <Button
+                className="w-[20%] text-xl px-2 py-1 mr-[25%]"
+                label="Filter"
+                raised
+                onClick={handleButtonFilterClick}
+                size="large"
+              />
             </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
     </>
   );
 }
