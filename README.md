@@ -22,7 +22,7 @@ Step-by-step instructions to install and set up the project.
 
    ```sh
    git clone https://github.com/dturin1997/financial-data-filtering-app.git
-   cd your-repo
+   cd financial-data-filtering-app
    ```
 
 2. **Install dependencies:**
