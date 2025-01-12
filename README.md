@@ -40,7 +40,8 @@ Step-by-step instructions to install and set up the project.
 4. **Then you will be able to get your free API Key**
 
 5. **Create the .env file at the root of the project**
-   -Add this environment variables
+
+   - Add this environment variables
 
    ```
    NEXT_PUBLIC_API_KEY={YOUR_API_KEY}
