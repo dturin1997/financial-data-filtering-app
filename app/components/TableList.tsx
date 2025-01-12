@@ -6,11 +6,11 @@ import Filters from "./Filters";
 import {
   DataRow,
   Filter,
-  Fields,
   DropDownField,
 } from "../interfaces/interface";
 import { rawData } from "../Data/fixedData";
 import SortDropdown from "./SortDropdown";
+import { SortFunction } from "../utilities/utilities";
 
 export default function TableList() {
   const [initialData, setInitialData] = useState<DataRow[]>([]);
@@ -119,38 +119,7 @@ export default function TableList() {
   };
 
   const sortTableList = (selectedFields: DropDownField[]) => {
-    const fields = {
-      ...selectedFields.map((field) => ({ id: field.id, state: field.state })),
-    };
-    //console.log(fields);
-
-    const sortedByFields: DataRow[] = filteredData.sort((a, b): number => {
-      const bb = 1;
-      const resul: DataRow[] = selectedFields.map((field): DataRow => {
-        console.log(field);
-        const aa = {
-          date: "2024-09-28",
-
-          revenue: 391035000000,
-
-          grossProfit: 180683000000,
-
-          operatingIncome: 123216000000,
-
-          netIncome: 93736000000,
-
-          eps: 6.11,
-        };
-        return aa;
-      });
-      return bb;
-      /*
-      if (a.revenue === b.revenue) {
-        return a.income - b.income;
-      }
-      return a.revenue - b.revenue;
-*/
-    });
+    setFilteredData(SortFunction(filteredData, selectedFields));
   };
 
   if (loading) return <p>Loading...</p>;

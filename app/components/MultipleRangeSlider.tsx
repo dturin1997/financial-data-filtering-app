@@ -36,11 +36,7 @@ export default function MultipleRangeSlider({
       />
       <div className="flex w-[60%] justify-between mt-3">
         <span className="">
-          {
-            name != "Date" ? `$${(value[0] / 10 ** 9).toFixed(1)}B` : value[0]
-            /* Assume the date is the value obtained
-             when this operation has no integer part. */
-          }
+          {name != "Date" ? `$${(value[0] / 10 ** 9).toFixed(1)}B` : value[0]}
         </span>
         <span className="">
           {name != "Date" ? `$${(value[1] / 10 ** 9).toFixed(1)}B` : value[1]}

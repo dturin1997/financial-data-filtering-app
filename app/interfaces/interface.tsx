@@ -2,9 +2,9 @@ export interface DataRow {
   date: string;
   revenue: number;
   netIncome: number;
-  grossProfit?: number;
-  eps?: number;
-  operatingIncome?: number;
+  grossProfit: number;
+  eps: number;
+  operatingIncome: number;
 }
 
 export interface Filter {
@@ -28,17 +28,30 @@ export interface Params {
   range: number[];
 }
 
-export interface Fields {
-  date: string;
-  revenue: string;
-  netIncome: string;
-  grossProfit: string;
-  eps: string;
-  operatingIncome: string;
-}
-
 export interface DropDownField {
   id: string;
   text?: string;
-  state?: boolean | null;
+  state: boolean | null;
 }
+
+export interface TruthTableRowThreeFields {
+  A: boolean;
+  B: boolean;
+  C: boolean;
+  result: boolean;
+}
+export interface TruthTableRowTwoFields {
+  A: boolean;
+  B: boolean;
+  result: boolean;
+}
+export interface TruthTableRowOneField {
+  A: boolean;
+  result: boolean;
+}
+
+export type TruthValues =
+  | TruthTableRowThreeFields
+  | TruthTableRowTwoFields
+  | TruthTableRowOneField
+  | null;

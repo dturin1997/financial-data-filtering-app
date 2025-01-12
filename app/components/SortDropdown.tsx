@@ -9,8 +9,6 @@ interface Props {
 
 export default function SortDropdown({ sortTableList }: Props) {
   const [selectedFields, setSelectedFields] = useState<DropDownField[]>([]);
-  //const [isResetSelected, setIsResetSelected] = useState<boolean>(false);
-
   const fields = [
     { id: "clear", text: "Reset", state: null },
     { id: "date", text: "Date", state: null },
@@ -19,7 +17,9 @@ export default function SortDropdown({ sortTableList }: Props) {
   ];
 
   useEffect(() => {
-    sortTableList(selectedFields);
+    if (selectedFields.length != 0) {
+      sortTableList(selectedFields);
+    }
   }, [selectedFields]);
 
   return (
@@ -59,7 +59,6 @@ export default function SortDropdown({ sortTableList }: Props) {
                   ? { ...field, ...fieldOrEmpty }
                   : field
               );
-
               setSelectedFields(updatedFields);
             }
 
