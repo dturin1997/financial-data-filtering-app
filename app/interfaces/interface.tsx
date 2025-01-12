@@ -2,9 +2,9 @@ export interface DataRow {
   date: string;
   revenue: number;
   netIncome: number;
-  grossProfit: number;
-  eps: number;
-  operatingIncome: number;
+  grossProfit?: number;
+  eps?: number;
+  operatingIncome?: number;
 }
 
 export interface Filter {
@@ -39,11 +39,6 @@ export interface Fields {
 
 export interface DropDownField {
   id: string;
-  text: string;
-  state: boolean | null;
-}
-
-export interface SortRequest {
-  field: string;
-  asc: boolean;
+  text?: string;
+  state?: boolean | null;
 }

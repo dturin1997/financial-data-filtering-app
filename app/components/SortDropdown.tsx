@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { FloatLabel } from "primereact/floatlabel";
-import { DropDownField, SortRequest } from "../interfaces/interface";
+import { DropDownField } from "../interfaces/interface";
 
-export default function SortDropdown() {
+interface Props {
+  sortTableList: (selectedFields: DropDownField[]) => void;
+}
+
+export default function SortDropdown({ sortTableList }: Props) {
   const [selectedFields, setSelectedFields] = useState<DropDownField[]>([]);
-  const [sortOrder, setSortOrder] = useState<SortRequest[]>([]);
+  //const [isResetSelected, setIsResetSelected] = useState<boolean>(false);
 
   const fields = [
     { id: "clear", text: "Reset", state: null },
@@ -14,6 +18,10 @@ export default function SortDropdown() {
     { id: "netIncome", text: "Net Income", state: null },
   ];
 
+  useEffect(() => {
+    sortTableList(selectedFields);
+  }, [selectedFields]);
+
   return (
     <div className="card flex justify-content-center mt-10">
       <FloatLabel className="w-full md:w-14rem">
@@ -21,34 +29,47 @@ export default function SortDropdown() {
           inputId="dd-field"
           value={selectedFields}
           onChange={(e) => {
-            const found = fields.find((field) => field.id === e.value.id);
-            const field: DropDownField = found ? found : ({} as DropDownField);
+            const isThere = selectedFields.find(
+              (selectedField) => selectedField.id === e.value.id
+            );
 
-            if (field) {
-              if (field.id === "clear") {
-                setSelectedFields([]);
-                return;
-              }
+            //Handling when the search gives {}
+            const fieldOrEmpty: DropDownField = isThere
+              ? isThere
+              : ({} as DropDownField);
 
-              if (field.state === null) {
-                field.state = true;
-              }
+            /*
+            Selecting reset enters in this condition
+            */
+            if (e.value.id === "clear") {
+              setSelectedFields([]);
+              return;
+            }
 
-              const isThere = selectedFields.find(
-                (selectedField) => selectedField.id === field.id
+            /*
+            After the first time selected fields 
+            enter in this condition
+            */
+
+            if (Object.keys(fieldOrEmpty).length > 0) {
+              fieldOrEmpty.state = !fieldOrEmpty.state;
+
+              const updatedFields = selectedFields.map((field) =>
+                field.id === fieldOrEmpty.id
+                  ? { ...field, ...fieldOrEmpty }
+                  : field
               );
 
-              if (isThere) {
-                isThere.state = !isThere.state;
-                const updatedSelectedFields = selectedFields.map((field) =>
-                  field.id === isThere.id ? { ...field, ...isThere } : field
-                );
-                setSelectedFields(updatedSelectedFields);
-              }
+              setSelectedFields(updatedFields);
+            }
 
-              if (!isThere) {
-                setSelectedFields([...selectedFields, field]);
-              }
+            /*
+            The first time not selected fields 
+            enter in this condition
+            */
+            if (Object.keys(fieldOrEmpty).length === 0) {
+              e.value.state = true;
+              setSelectedFields([...selectedFields, e.value]);
             }
           }}
           options={fields}
