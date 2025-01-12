@@ -19,38 +19,38 @@ Step-by-step instructions to install and set up the project.
 
 1. **Clone the repository:**
 
-    ```sh
-    git clone https://github.com/dturin1997/financial-data-filtering-app.git
-    cd your-repo
-    ```
+   ```sh
+   git clone https://github.com/dturin1997/financial-data-filtering-app.git
+   cd your-repo
+   ```
 
 2. **Install dependencies:**
 
-    Using npm:
+   Using npm:
 
-    ```sh
-    npm install
-    ```
+   ```sh
+   npm install
+   ```
 
 3. **Start the development server:**
 
-    Using npm:
+   Using npm:
 
-    ```sh
-    npm run dev
-    ```
+   ```sh
+   npm run dev
+   ```
 
 4. **Open your browser and visit:**
 
-    ```
-    http://localhost:3000
-    ```
+   ```
+   http://localhost:3000
+   ```
 
 ## Deployment
 
 Here is the link to the deployed app:
 
-[Deployed App](https://your-deployed-app-link.com)
+[Deployed App](https://financial-data-filtering-app.djturin.dev/)
 
 ## Built With
 
@@ -68,13 +68,8 @@ If you want to contribute, please follow these guidelines.
 5. Push to the branch (`git push origin feature-branch`)
 6. Open a pull request
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
 ## Acknowledgments
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc.
+- "Sometimes, things seem easy until you uncover the complexities behind the scenes. 🕵️‍♂️"
 
+- "I had no idea my previous job would come in handy for this challenge! 💪"
