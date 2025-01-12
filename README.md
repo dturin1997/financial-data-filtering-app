@@ -40,13 +40,14 @@ Step-by-step instructions to install and set up the project.
 4. **Then you will be able to get your free API Key**
 
 5. **Create the .env file at the root of the project**
-    Add this environment variables
+   -Add this environment variables
+
    ```
    NEXT_PUBLIC_API_KEY={YOUR_API_KEY}
    NEXT_PUBLIC_ENVIRONMENT=development
    ```
 
-5. **Start the development server:**
+6. **Start the development server:**
 
    Using npm:
 
@@ -54,7 +55,7 @@ Step-by-step instructions to install and set up the project.
    npm run dev
    ```
 
-6. **Open your browser and visit:**
+7. **Open your browser and visit:**
 
    ```
    http://localhost:3000
