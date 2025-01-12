@@ -3,11 +3,7 @@ import React, { useEffect, useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Filters from "./Filters";
-import {
-  DataRow,
-  Filter,
-  DropDownField,
-} from "../interfaces/interface";
+import { DataRow, Filter, DropDownField } from "../interfaces/interface";
 import { rawData } from "../Data/fixedData";
 import SortDropdown from "./SortDropdown";
 import { SortFunction } from "../utilities/utilities";
@@ -35,7 +31,16 @@ export default function TableList() {
         const res = await fetch(
           `https://financialmodelingprep.com/api/v3/income-statement/AAPL?period=annual&apikey=${apiKey}`
         );
-        initialData = await res.json();
+        const result = await res.json();
+
+        initialData = result.map((item: DataRow) => ({
+          date: item.date,
+          revenue: item.revenue,
+          netIncome: item.netIncome,
+          grossProfit: item.grossProfit,
+          eps: item.eps,
+          operatingIncome: item.operatingIncome,
+        }));
       } else {
         initialData = rawData.map((item) => ({
           date: item.date,
