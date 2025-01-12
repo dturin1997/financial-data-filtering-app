@@ -68,7 +68,7 @@ export default function Filters({
 
   return (
     <>
-      <div className="card my-3">
+      <div className="card my-3 mx-auto max-w-[650px]">
         <Card title="User Filters">
           <div className="flex flex-col">
             <div>

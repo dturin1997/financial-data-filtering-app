@@ -1,4 +1,15 @@
+/* export interface DataRow {
+  date: string;
+  revenue: number;
+  netIncome: number;
+  grossProfit: number;
+  eps: number;
+  operatingIncome: number;
+}
+ */
+
 export interface DataRow {
+  [key: string]: any; // This allows indexing with string keys
   date: string;
   revenue: number;
   netIncome: number;

@@ -7,6 +7,7 @@ import { DataRow, Filter, DropDownField } from "../interfaces/interface";
 import { rawData } from "../Data/fixedData";
 import SortDropdown from "./SortDropdown";
 import { SortFunction } from "../utilities/utilities";
+import CardTable from "./CardTable";
 
 export default function TableList() {
   const [initialData, setInitialData] = useState<DataRow[]>([]);
@@ -19,6 +20,18 @@ export default function TableList() {
   const [minAndMaxNetIncome, setMinAndMaxNetIncome] = useState<number[]>([]);
 
   const [loading, setLoading] = useState(true);
+
+  const columns: {
+    label: string;
+    render?: (row: string | number | any) => JSX.Element;
+  }[] = [
+    { label: "Date" },
+    { label: "Revenue" },
+    { label: "Net Income" },
+    { label: "Gross Profit" },
+    { label: "Earnings Per Share" },
+    { label: "Operating Income" },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -130,56 +143,24 @@ export default function TableList() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="mx-4">
-      <Filters
-        filters={filters}
-        filterTableList={filterTableList}
-        minAndMaxYears={minAndMaxYears}
-        minAndMaxRevenue={minAndMaxRevenue}
-        minAndMaxNetIncome={minAndMaxNetIncome}
-      />
-      <SortDropdown sortTableList={sortTableList} />
-      <div className="card my-8 flex flex-row">
-        <div className="table  w-full md:hidden">
-          <div className="table-header-group">
-            {Array.from({ length: filteredData.length }, (_, row) => {
-              return (
-                <div
-                  key={row}
-                  className={`flex flex-col  border-t-2 border-l-2 border-dotted border-gray-300 row-header-custom ${
-                    row + 1 == filteredData.length ? "border-b-2" : null
-                  }`}
-                >
-                  {fields.map((name) => (
-                    <div
-                      key={row + name}
-                      className={`table-cell ${
-                        (row + 1) % 2 == 0 ? "bg-[#FCFCFC]" : "bg-white"
-                      } text-left`}
-                    >
-                      {name
-                        .replace(/([a-z])([A-Z])/g, "$1 $2")
-                        .replace(/\b\w/g, (char) => char.toUpperCase())}
-                    </div>
-                  ))}
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <DataTable
-          value={filteredData}
-          stripedRows
-          tableStyle={{ width: "100%" }}
-        >
-          <Column field="date" header="Date" />
-          <Column field="revenue" header="Revenue" />
-          <Column field="netIncome" header="Net Income" />
-          <Column field="grossProfit" header="Gross Profit" />
-          <Column field="eps" header="Earnings Per Share" />
-          <Column field="operatingIncome" header="Operating Income" />
-        </DataTable>
+    <>
+      <div className="mx-4">
+        <Filters
+          filters={filters}
+          filterTableList={filterTableList}
+          minAndMaxYears={minAndMaxYears}
+          minAndMaxRevenue={minAndMaxRevenue}
+          minAndMaxNetIncome={minAndMaxNetIncome}
+        />
+        <SortDropdown sortTableList={sortTableList} />
+        <CardTable
+          id="Table List"
+          label="Financial data info"
+          columns={columns}
+          data={filteredData}
+          gridTemplateColumns="2fr 2fr 2fr 2fr 2fr 2fr"
+        />
       </div>
-    </div>
+    </>
   );
 }

@@ -23,8 +23,8 @@ export default function SortDropdown({ sortTableList }: Props) {
   }, [selectedFields]);
 
   return (
-    <div className="card flex justify-content-center mt-10">
-      <FloatLabel className="w-full md:w-14rem">
+    <div className="card flex justify-center w-full md:my-20 my-10">
+      <FloatLabel className="w-[60%] items-center">
         <Dropdown
           inputId="dd-field"
           value={selectedFields}
@@ -75,7 +75,7 @@ export default function SortDropdown({ sortTableList }: Props) {
           optionLabel="text"
           className="w-full"
         />
-        <label className="text-lg mt-[-4%]" htmlFor="dd-field">
+        <label className="text-lg top-[-25]" htmlFor="dd-field">
           Sort By&nbsp;
           {selectedFields.map((field, index) => {
             return (
